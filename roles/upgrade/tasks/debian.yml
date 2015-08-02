@@ -1,0 +1,15 @@
+- name: ensure aptitude for safe upgrade
+  apt: name=aptitude state=latest
+
+- name: run apt-get update equivalent
+  apt: update_cache=yes
+
+- name: run apt-get upgrade equivalent
+  apt: upgrade=safe
+  when: run_upgrade
+
+- name: check for new kernel
+  shell: if [ $(readlink -f /vmlinuz) != /boot/vmlinuz-$(uname -r) ]; then echo 'reboot'; else echo 'no'; fi
+  ignore_errors: true
+  changed_when: reboot_hint.stdout.find("reboot") != -1
+  register: reboot_hint

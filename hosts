@@ -1,0 +1,3 @@
+[all]
+jenkins01 ansible_ssh_user=root ansible_ssh_host=10.73.83.13
+jenkins02 ansible_ssh_user=root ansible_ssh_host=10.73.83.15

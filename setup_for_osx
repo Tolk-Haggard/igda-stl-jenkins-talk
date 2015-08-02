@@ -1,0 +1,5 @@
+#!/bin/bash
+git submodule update --init --recursive
+brew install libyaml
+sudo easy_install pip
+sudo pip install paramiko PyYAML Jinja2 httplib2

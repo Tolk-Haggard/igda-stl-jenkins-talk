@@ -1,0 +1,39 @@
+---
+- name: dependencies
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - curl
+  - git-core
+  - build-essential
+  - autoconf
+  - bison
+  - libssl-dev
+  - libyaml-dev
+  - libreadline6-dev
+  - zlib1g-dev
+  - libncurses5-dev
+  - libffi-dev
+  - libgdbm3
+  - libgdbm-dev
+  - libmagickwand-dev
+  - libmagickcore-dev
+  - imagemagick
+  - bind9
+  - s3cmd
+
+- name: Jenkins apt repository key
+  apt_key: >
+    url="https://jenkins-ci.org/debian/jenkins-ci.org.key"
+    state=present
+
+- name: Jenkins apt repository
+  apt_repository: >
+    repo="deb http://pkg.jenkins-ci.org/debian binary/"
+    state=present
+    update_cache=yes
+
+- name: Jenkins present
+  apt: pkg=jenkins state=installed
+
+- name: ssh key for deploys
+  user: name=jenkins generate_ssh_key=yes

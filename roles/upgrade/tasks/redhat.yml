@@ -1,0 +1,13 @@
+- name: ensure epel repo
+  yum: name=https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm state=present
+
+- name: upgrade all packages
+  command: yum upgrade -y
+  async: 2700
+  poll: 60
+  when: run_upgrade
+
+- name: check for new kernel
+  shell: test $(rpm -q --last kernel | perl -pe 's/^kernel-(\S+).*/$1/' | head -1) = $(uname -r) && echo "false" || echo "true"
+  changed_when: reboot_hint.stdout == "true"
+  register: reboot_hint
